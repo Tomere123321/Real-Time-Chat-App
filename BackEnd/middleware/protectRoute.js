@@ -27,7 +27,7 @@ const protectRoute = async (req, res, next) => {
   
   } 
    catch (e) {
-    console.log("error in ProtectRoute Middlwere", e.massage);
+    console.log("error in ProtectRoute Middlwere", e.message);
     res.status(401).json({ error: "Unauthorized, token failed" });
   }
 };

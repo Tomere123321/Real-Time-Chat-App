@@ -7,11 +7,18 @@ const generateToken = require("../utills/JWT");
 router.post("/login", async (req, res) => {
   try {
     const { userName, password } = req.body;
+    
+    
     const user = await userModel.findOne({ userName });
+    
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid userName or password!" });
+    }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    if (!user || !isPasswordCorrect) {
+    if (!isPasswordCorrect) {
       return res.status(400).json({ error: "Invalid userName or password!" });
     }
 
@@ -27,6 +34,7 @@ router.post("/login", async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 router.post("/signup", async (req, res) => {
   try {
@@ -77,16 +85,18 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
 router.post("/logout", (req, res) => {
   try {
     res.status(200).json({
+      success: true,
       message: "logged Out successfully",
-      token: null,
     });
   } catch (e) {
     console.log("Error in logout Controller:", e.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 module.exports = router;

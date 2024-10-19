@@ -59,9 +59,9 @@ router.post("/signup", async (req, res) => {
 
     if (newUser) {
       await newUser.save();
-      const token = generateToken(newUser._id);
+      const token = generateToken(newUser._id, res);
 
-      return res.status(200).json({
+      return res.status(201).json({
         _id: newUser._id,
         fullName: newUser.fullName,
         userName: newUser.userName,
@@ -72,7 +72,7 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ error: "Failed to create user" });
     }
   } catch (e) {
-    console.log("Error in logout Controller", e.massage);
+    console.log("Error in logout Controller", e.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
